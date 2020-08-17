@@ -2,6 +2,7 @@ package utils;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,11 +71,13 @@ public class NetworkUtils {
                 connection = (HttpURLConnection) urls[0].openConnection();
                 InputStream inputStream = connection.getInputStream();//wodim ddanie
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader reader = new BufferedReader(inputStreamReader);
+                BufferedReader reader = new BufferedReader(inputStreamReader);//BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
+                //выше мы устанавливали связь с этим адресом и ввели его в РЕАДЕР, чтобы внизу вытащить его и поместить в СТРИНГ БИЛДЕР. Из этого стринга и сделали JSON
                 StringBuilder builder = new StringBuilder();
                 String listener = reader.readLine();
                 while(listener!=null){
                     builder.append(listener);
+                    Log.d("666333", "\n doInBackground: "+builder.toString());
                     listener=reader.readLine();
                 }
                 result = new JSONObject(builder.toString());
@@ -92,7 +95,7 @@ public class NetworkUtils {
 
     public static JSONObject getJSONFromNetwork(int sortBy, int page){//инфа с интернета т.е. получаем JSON
         JSONObject result = null;
-        URL url = buildURL(sortBy, page);
+        URL url = buildURL(sortBy, page);//получаем URL ссылку
         try {
             result=new JSONLoadTask().execute(url).get();
         } catch (ExecutionException e) {
