@@ -28,11 +28,11 @@ public class JSONUtils {
             return result;
         }
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray(KEY_RESULTS);
+            JSONArray jsonArray = jsonObject.getJSONArray(KEY_RESULTS);//берём массив с меткой results из JSON объекта. Его можно вычислить из JSONMate'a.
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject objectMovie = jsonArray.getJSONObject(i);
-                int id = objectMovie.getInt(KEY_ID);
-                int voteCount = objectMovie.getInt(KEY_VOTE_COUNT);
+                JSONObject objectMovie = jsonArray.getJSONObject(i);//уже из этого массива вычленяем объект.
+                int id = objectMovie.getInt(KEY_ID);// Параметры этого элемента разбиваем по отдельным переменным
+                int voteCount = objectMovie.getInt(KEY_VOTE_COUNT);//из них делаем Movie объект
                 String title = objectMovie.getString(KEY_TITLE);
                 String originalTitle = objectMovie.getString(KEY_ORIGINAL_TITLE);
                 String overview = objectMovie.getString(KEY_OVERVIEW);
@@ -41,7 +41,7 @@ public class JSONUtils {
                 double voteAverage = objectMovie.getDouble(KEY_VOTE_AVERAGE);
                 String releaseDate = objectMovie.getString(KEY_RELEASE_DATE);
                 Movie movie = new Movie(id, voteCount, title, originalTitle, overview, posterPath, backdropPath, voteAverage, releaseDate);
-                result.add(movie);
+                result.add(movie);//помещаем его в арайлист и возвращаем в метод
             }
         } catch (JSONException e) {
             e.printStackTrace();

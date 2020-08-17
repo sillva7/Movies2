@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 //        }//тест на правильность. КОНЕЦ
 
         JSONObject jsonObject = NetworkUtils.getJSONFromNetwork(NetworkUtils.POPULARITY, 5);
+        Log.d("898989", "onCreate: "+jsonObject.toString());
         ArrayList<Movie> movies = JSONUtils.getMoviesFromJSON(jsonObject);
         StringBuilder builder = new StringBuilder();
         for(Movie movie: movies){
