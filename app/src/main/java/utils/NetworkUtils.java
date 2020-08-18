@@ -36,6 +36,10 @@ public class NetworkUtils {
     public static final int POPULARITY = 0;//для сортировки
     public static final int TOP_RATED = 1;
 
+    private static String BASE_POSTER_URL = "https://image.tmdb.org/t/p";
+    private static final String SMALL_POSTER_SIZE = "w185";
+    private static final String BIG_POSTER_SIZE = "w780";
+
 
     public static URL buildURL(int sortBy, int page){ // методо для построения запроса и получения JSONа. ну всю вот эту табличную поеботу получаем
         URL result = null;
@@ -59,12 +63,12 @@ public class NetworkUtils {
     }
 
     private static class JSONLoadTask extends AsyncTask<URL, Void, JSONObject>{ //для загрузки информации из интернета
-
+//в треугольных скобках: <входной_параметр, процесс, результат>
         @Override
         protected JSONObject doInBackground(URL... urls) {
             JSONObject result = null;
             if(urls == null || urls.length == 0){
-                return result;
+                return result;//
             }
             HttpURLConnection connection = null;
             try {
