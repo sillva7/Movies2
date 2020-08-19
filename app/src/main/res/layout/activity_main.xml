@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
 
@@ -15,23 +16,31 @@
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:trackTint="@android:color/white"
+        android:thumb="@drawable/ic_baseline_accessible_24"
+        />
+
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewPopularity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
         android:text="@string/popularity"
+        android:onClick="OnClickSetPopularity"
         app:layout_constraintEnd_toStartOf="@+id/switchSort"
         app:layout_constraintTop_toTopOf="@+id/switchSort"
         app:layout_constraintBottom_toBottomOf="@id/switchSort"
         />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewTopRated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/top_rated"
+        android:textColor="@color/yellow"
+        android:onClick="OnClickSetTopRated"
         app:layout_constraintStart_toEndOf="@+id/switchSort"
         app:layout_constraintBottom_toBottomOf="@id/switchSort"
         app:layout_constraintTop_toTopOf="@+id/switchSort" />
@@ -39,9 +48,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchSort"
         android:background="@color/black"
 
         />
