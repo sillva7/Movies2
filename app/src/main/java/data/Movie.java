@@ -1,8 +1,14 @@
 package data;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "movies")
 public class Movie {
 
-    private int id, voteCount;
+    @PrimaryKey
+    private int id;
+    private int voteCount;
     private String title, originalTitle, overview, posterPath, bigPosterPath, backdropPath;
     private double voteAverage;
     private String releaseDate;

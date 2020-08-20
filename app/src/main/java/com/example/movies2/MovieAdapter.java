@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import data.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    ArrayList<Movie> movies;
+    List<Movie> movies;
     private OnPosterClickListener onPosterClickListener;//для щелчка по постер в РесВью
     private OnReachEndListener onReachEndListener;//при достижении конца списка
 
@@ -38,17 +39,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void onReachEnd();
     }
 
-    public ArrayList<Movie> getMovies() {
+    public List<Movie> getMovies() {
         movies = new ArrayList<>();
         return movies;
     }
 
-    public void setMovies(ArrayList<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();//для отслеживания изменения
     }
 
-    public MovieAdapter(ArrayList<Movie> movies) {
+    public MovieAdapter(List<Movie> movies) {
         this.movies = movies;
     }
 
@@ -61,8 +62,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {//не хватает конкретики по работе.
-        if( position == movies.size() - 1 && onReachEndListener != null){
-            onReachEndListener.onReachEnd();//при достижении конца списка. А точнее его конкретной позиции
+        if( position == movies.size() - 1 && onReachEndListener != null){//при достижении конца списка. А точнее его конкретной позиции
+            onReachEndListener.onReachEnd();
         }
         Movie movie = movies.get(position);//нужен для знания адреса постера
         ImageView imageView = holder.smallPoster;//элемент в РесВью,а ещё точнее - ИВ лайаута, который будет наполнять РесВью
@@ -74,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
-    public void addMovies(ArrayList<Movie> movies) {//Чтобы при добавлении не переделывать целлый массив, а просто добавлять в существующий:
+    public void addMovies(List<Movie> movies) {//Чтобы при добавлении не переделывать целлый массив, а просто добавлять в существующий:
         this.movies.addAll(movies);
         notifyDataSetChanged();//для отслеживания изменения
 

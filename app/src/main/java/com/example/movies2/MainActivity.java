@@ -1,6 +1,9 @@
 package com.example.movies2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +19,9 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import data.MainViewModel;
 import data.Movie;
 import utils.JSONUtils;
 import utils.NetworkUtils;
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch switchSort;
     private TextView textViewPopularity;
     private TextView textViewTopRated;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("494949", "onCreate: "+builder);
         textViewPopularity = findViewById(R.id.textViewPopularity);
         textViewTopRated = findViewById(R.id.textViewTopRated);
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         recyclerView = findViewById(R.id.recyclerView);
         movieAdapter = new MovieAdapter(movies);
@@ -85,9 +92,30 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(movieAdapter);//устанавливаем сопсна сам адаптерг на РесВью
 
+        LiveData<List<Movie>> moviesFromLiveData = viewModel.getMovies();
+        moviesFromLiveData.observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                movieAdapter.setMovies(movies);
+            }
+        });
+
 
     }
 
+
+    //метод загрузки данных:
+    private void downloadData(int methodOfSort, int page) {
+        JSONObject jsonObject = NetworkUtils.getJSONFromNetwork(methodOfSort, page);//получаем JSON объект в котором куча инфы о фильмах и сами фильмы
+        movies = JSONUtils.getMoviesFromJSON(jsonObject);//получаем эту кучу фильмов в виде массива
+        movieAdapter.setMovies(movies);//приплетаем этот массив к РесВью чз адаптерг
+        if (movies != null && !movies.isEmpty()) {
+            viewModel.deleteAllMovies();
+            for (Movie movie : movies){
+                viewModel.insertMovie(movie);
+            }
+        }
+    }
 
 
     public void setMethodOfSort(boolean isTopRated) { // этот метод для того чтобы, в зависимости от положения свитча, формировался ДЖСОН объект с характерной сортировкой
@@ -102,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
             textViewPopularity.setTextColor(getResources().getColor(R.color.colorAccent));
             textViewTopRated.setTextColor(getResources().getColor(R.color.yellow));
         }
-        JSONObject jsonObject = NetworkUtils.getJSONFromNetwork(methodOfSort, 1);//получаем JSON объект в котором куча инфы о фильмах и сами фильмы
-        movies = JSONUtils.getMoviesFromJSON(jsonObject);//получаем эту кучу фильмов в виде массива
-        movieAdapter.setMovies(movies);//приплетаем этот массив к РесВью чз адаптерг
+        downloadData(methodOfSort, 1);
     }
 
     public void OnClickSetPopularity(View view) {
